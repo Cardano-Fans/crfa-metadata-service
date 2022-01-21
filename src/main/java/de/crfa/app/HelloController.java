@@ -1,4 +1,4 @@
-package First;
+package de.crfa.app;
 
 import io.micronaut.http.annotation.*;
 

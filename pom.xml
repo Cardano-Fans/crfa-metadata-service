@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>First</groupId>
-  <artifactId>First</artifactId>
+  <groupId>de.crfa</groupId>
+  <artifactId>crfa-metadata-service</artifactId>
   <version>0.1</version>
   <packaging>${packaging}</packaging>
 
@@ -18,7 +18,7 @@
     <jdk.version>11</jdk.version>
     <release.version>11</release.version>
     <micronaut.version>3.2.7</micronaut.version>
-    <exec.mainClass>First.Application</exec.mainClass>
+    <exec.mainClass>de.crfa.app.Application</exec.mainClass>
     <micronaut.runtime>netty</micronaut.runtime>
   </properties>
 

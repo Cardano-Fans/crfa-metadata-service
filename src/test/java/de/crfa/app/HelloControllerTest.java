@@ -1,4 +1,4 @@
-package First;
+package de.crfa.app;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
