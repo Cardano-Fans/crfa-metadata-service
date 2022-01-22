@@ -22,14 +22,14 @@ public class MetaDataResource {
         this.metaDataService = metaDataService;
     }
 
-    @Get(uri = "/by-script-hash/{scriptHash}", produces = "application/json")
-    public Optional<ProjectDto> byScriptHash(@PathVariable String scriptHash) throws IOException {
+    @Get(uri = "/by-script-hash/{hash}", produces = "application/json")
+    public Optional<ProjectDto> byScriptHash(@PathVariable String hash) throws IOException {
         var projects = metaDataService.loadProjects();
 
         for (Project p : projects) {
             for (Script s : p.getScripts()) {
                 for (Version v : s.getVersions()) {
-                    if (scriptHash.equals(v.getScriptHash()) || scriptHash.equals(v.getMintPolicyID())) {
+                    if (hash.equals(v.getScriptHash()) || hash.equals(v.getMintPolicyID())) {
                         var dto = ProjectDto
                                 .builder()
                                 .scriptHash(v.getScriptHash())
