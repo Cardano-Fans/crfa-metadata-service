@@ -35,6 +35,7 @@ public class MetaDataResource {
                                 .scriptHash(v.getScriptHash())
                                 .projectName(p.getProjectName())
                                 .scriptName(s.getName())
+                                .version(v.getVersion())
                                 .url(p.getLink())
                                 .contractAddress(v.getContractAddress())
                                 .mintPolicyID(v.getMintPolicyID())
@@ -47,6 +48,7 @@ public class MetaDataResource {
                 }
             }
         }
+
         return Optional.empty();
     }
 }
