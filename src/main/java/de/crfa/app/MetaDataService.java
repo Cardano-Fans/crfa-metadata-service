@@ -31,11 +31,9 @@ public class MetaDataService {
     private static String SUBPATH = "crfa-offchain-data-registry";
 
     public MetaDataService() throws GitAPIException {
-        cloneRepo();
-
         this.objectMapper = new ObjectMapper();
-        var tmpPath =  System.getProperty("java.io.tmpdir");
-        this.tmpFile = new File(tmpPath);
+        this.tmpFile = new File(System.getProperty("java.io.tmpdir"));
+        cloneRepo();
     }
 
     @Scheduled(fixedDelay = "1h", initialDelay = "1h")
