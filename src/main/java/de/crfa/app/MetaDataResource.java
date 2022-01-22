@@ -1,14 +1,19 @@
 package de.crfa.app;
 
+import de.crfa.app.domain.Project;
+import de.crfa.app.domain.ProjectDto;
+import de.crfa.app.domain.Script;
+import de.crfa.app.domain.Version;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Controller("/metadata")
+@Slf4j
 public class MetaDataResource {
 
     private MetaDataService metaDataService;
@@ -17,28 +22,31 @@ public class MetaDataResource {
         this.metaDataService = metaDataService;
     }
 
-    @Get(uri="/by-script-hash", produces="text/plain")
-    public List<HashMap<Object, Object>> all() throws IOException {
+    @Get(uri = "/by-script-hash/{scriptHash}", produces = "application/json")
+    public Optional<ProjectDto> byScriptHash(@PathVariable String scriptHash) throws IOException {
         var projects = metaDataService.loadProjects();
 
-        var map = new HashMap<>();
+        for (Project p : projects) {
+            for (Script s : p.getScripts()) {
+                for (Version v : s.getVersions()) {
+                    if (scriptHash.equals(v.getScriptHash()) || scriptHash.equals(v.getMintPolicyID())) {
+                        var dto = ProjectDto
+                                .builder()
+                                .scriptHash(v.getScriptHash())
+                                .projectName(p.getProjectName())
+                                .scriptName(s.getName())
+                                .url(p.getLink())
+                                .contractAddress(v.getContractAddress())
+                                .mintPolicyID(v.getMintPolicyID())
+                                .icon(String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=64", p.getLink()))
+                                .twitter(p.getTwitter())
+                                .build();
 
-        return projects.forEach(project -> {
-
-            map.put("name", project.getProjectName());
-            map.put("link", project.getLink());
-            map.put("twitter", project.getTwitter());
-
-            project.getScripts().forEach(script -> {
-                map.put("")
-            });
-
-        }).collect(Collectors.toList());
-
-        return map;
-
+                        return Optional.of(dto);
+                    }
+                }
+            }
+        }
+        return Optional.empty();
     }
-
 }
-
-// haskell

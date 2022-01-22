@@ -12,7 +12,7 @@ import java.util.List;
 public class Script {
 
     String name;
-    String purpose;
+    Purpose purpose;
 
     List<Version> versions;
 
