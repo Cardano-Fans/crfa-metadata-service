@@ -16,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 public class MetaDataResource {
 
-    private MetaDataService metaDataService;
+    private final MetaDataService metaDataService;
 
     public MetaDataResource(MetaDataService metaDataService) {
         this.metaDataService = metaDataService;

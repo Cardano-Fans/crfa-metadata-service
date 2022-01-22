@@ -50,7 +50,7 @@ public class MetaDataService {
                 .call();
     }
 
-    @Scheduled(fixedDelay = "24h")
+    @Scheduled(fixedDelay = "24h", initialDelay = "24h")
     public void cleanTemp() throws IOException, GitAPIException {
         log.info("Cleaning temp...");
 
