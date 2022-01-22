@@ -24,6 +24,7 @@ public class MetaDataResource {
 
     @Get(uri = "/by-hash/{hash}", produces = "application/json")
     public Optional<ProjectDto> byScriptHash(@PathVariable String hash) throws IOException {
+        log.info("Received request, hash:{}", hash);
         var projects = metaDataService.loadProjects();
 
         for (Project p : projects) {

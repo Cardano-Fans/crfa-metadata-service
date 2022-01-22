@@ -28,7 +28,7 @@ public class MetaDataService {
     private File repoPath;
     private final ObjectMapper objectMapper;
 
-    private static String SUBPATH = "crfa-offchain-data-registry";
+    private static final String SUBPATH = "crfa-offchain-data-registry";
 
     public MetaDataService() throws GitAPIException {
         this.objectMapper = new ObjectMapper();
@@ -36,7 +36,7 @@ public class MetaDataService {
         cloneRepo();
     }
 
-    @Scheduled(fixedDelay = "1h", initialDelay = "1h")
+    @Scheduled(fixedDelay = "24h", initialDelay = "24h")
     public void cloneRepo() throws GitAPIException {
         log.info("Cloning repo, tmpPath:{}", this.tmpFile);
         this.repoPath = new File(tmpFile, SUBPATH + System.currentTimeMillis());
@@ -48,7 +48,7 @@ public class MetaDataService {
                 .call();
     }
 
-    @Scheduled(fixedDelay = "24h", initialDelay = "24h")
+    @Scheduled(fixedDelay = "144h", initialDelay = "144h")
     public void cleanTemp() throws IOException, GitAPIException {
         log.info("Cleaning temp...");
 
