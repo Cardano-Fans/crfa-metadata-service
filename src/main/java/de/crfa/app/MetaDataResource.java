@@ -22,7 +22,7 @@ public class MetaDataResource {
         this.metaDataService = metaDataService;
     }
 
-    @Get(uri = "/by-script-hash/{hash}", produces = "application/json")
+    @Get(uri = "/by-hash/{hash}", produces = "application/json")
     public Optional<ProjectDto> byScriptHash(@PathVariable String hash) throws IOException {
         var projects = metaDataService.loadProjects();
 
