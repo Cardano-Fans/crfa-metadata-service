@@ -33,13 +33,13 @@ public class MetaDataResource {
                     if (hash.equals(v.getScriptHash()) || hash.equals(v.getMintPolicyID())) {
                         var dto = ProjectDto
                                 .builder()
-                                .scriptHash(v.getScriptHash())
                                 .projectName(p.getProjectName())
                                 .scriptName(s.getName())
                                 .version(v.getVersion())
                                 .url(p.getLink())
                                 .contractAddress(v.getContractAddress())
                                 .mintPolicyID(v.getMintPolicyID())
+                                .purpose(s.getPurpose())
                                 .icon(String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=64", p.getLink()))
                                 .twitter(p.getTwitter())
                                 .build();
