@@ -5,7 +5,7 @@ Service which serves metadata from https://github.com/Cardano-Fans/crfa-offchain
 mvn clean package
 
 ## Starting
-java -jar crfa-metadata-service-0.2.jar
+java -jar crfa-metadata-service-0.3.jar
 
 ## Requirements
 - JDK 11
