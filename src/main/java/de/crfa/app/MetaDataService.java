@@ -65,8 +65,8 @@ public class MetaDataService {
         if (repoPath != null) {
             Files.list(Paths.get(repoPath.toString(), "dApps"))
                     .forEach(path -> {
-                        try {
-                            var fileContent = IOUtils.readText(new BufferedReader(new FileReader(path.toFile())));
+                        try (BufferedReader fr = new BufferedReader(new FileReader(path.toFile()))){
+                            var fileContent = IOUtils.readText(fr);
                             var project = objectMapper.readValue(fileContent, Project.class);
 
                             projects.add(project);

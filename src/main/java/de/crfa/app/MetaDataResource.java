@@ -31,18 +31,20 @@ public class MetaDataResource {
             for (Script s : p.getScripts()) {
                 for (Version v : s.getVersions()) {
                     if (hash.equals(v.getScriptHash()) || hash.equals(v.getMintPolicyID())) {
-                        var dto = ProjectDto
-                                .builder()
-                                .projectName(p.getProjectName())
-                                .scriptName(s.getName())
-                                .version(v.getVersion())
-                                .url(p.getLink())
-                                .contractAddress(v.getContractAddress())
-                                .mintPolicyID(v.getMintPolicyID())
-                                .purpose(s.getPurpose())
-                                .icon(String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=64", p.getLink()))
-                                .twitter(p.getTwitter())
-                                .build();
+                            var dto = ProjectDto
+                                    .builder()
+                                    .projectName(p.getProjectName())
+                                    .scriptName(s.getName())
+                                    .version(v.getVersion())
+                                    .url(p.getLink())
+                                    .contractAddress(v.getContractAddress())
+                                    .mintPolicyID(v.getMintPolicyID())
+                                    .purpose(s.getPurpose())
+                                    .category(p.getCategory())
+                                    .subCategory(p.getSubCategory())
+                                    .icon(String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=64", p.getLink()))
+                                    .twitter(p.getTwitter())
+                                    .build();
 
                         return Optional.of(dto);
                     }
