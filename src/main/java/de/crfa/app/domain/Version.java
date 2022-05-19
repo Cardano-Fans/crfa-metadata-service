@@ -1,9 +1,8 @@
 package de.crfa.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.micronaut.core.annotation.Nullable;
 import lombok.*;
-
-import java.util.List;
 
 @Builder
 @Getter
@@ -17,13 +16,10 @@ public class Version {
     String scriptHash;
     String contractAddress;
     String mintPolicyID;
-    List<Audit> audits;
+    @Nullable
+    String auditId;
 
     public Version() {
-    }
-
-    public boolean wasAudited() {
-        return audits != null && !audits.isEmpty();
     }
 
 }

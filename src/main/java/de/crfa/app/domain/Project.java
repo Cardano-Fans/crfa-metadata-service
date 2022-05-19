@@ -1,6 +1,7 @@
 package de.crfa.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class Project {
     String subCategory;
 
     List<Script> scripts;
+    @Nullable
+    List<Audit> audits;
 
     public Project() {
     }

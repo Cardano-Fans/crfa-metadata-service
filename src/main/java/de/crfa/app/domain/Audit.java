@@ -11,7 +11,12 @@ import lombok.*;
 @JsonIgnoreProperties
 public class Audit {
 
-    String auditLink;
+    String auditId;
     String auditor;
+    String auditLink;
+    AuditType auditType;
+
+    public Audit() {
+    }
 
 }
