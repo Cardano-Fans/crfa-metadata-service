@@ -14,6 +14,8 @@ import java.util.List;
 @JsonIgnoreProperties
 public class Project {
 
+    String projectId;
+
     String projectName;
     String link;
     String twitter;
@@ -24,6 +26,8 @@ public class Project {
     List<Script> scripts;
     @Nullable
     List<Audit> audits;
+    List<Audit> contracts;
+    List<String> features; // TODO strongly typed?
 
     public Project() {
     }

@@ -15,7 +15,7 @@ public class ProjectDto {
     String subCategory;
     String projectName;
     String scriptName;
-    int version;
+    Integer version;
     String url;
     String icon;
     String contractAddress;

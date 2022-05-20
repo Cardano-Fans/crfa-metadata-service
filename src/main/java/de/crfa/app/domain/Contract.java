@@ -6,23 +6,20 @@ import lombok.*;
 
 @Builder
 @Getter
-@ToString
 @Setter
+@ToString
 @AllArgsConstructor
 @JsonIgnoreProperties
-public class Version {
+public class Contract {
 
     Integer version;
-    String scriptHash;
-    String contractAddress;
 
     @Nullable
-    String mintPolicyID;
-
+    Boolean openSource;
     @Nullable
-    String auditId;
+    String contractLink;
 
-    public Version() {
+    public Contract() {
     }
 
 }
