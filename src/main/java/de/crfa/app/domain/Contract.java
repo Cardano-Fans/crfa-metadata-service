@@ -12,7 +12,7 @@ import lombok.*;
 @JsonIgnoreProperties
 public class Contract {
 
-    Integer version;
+    String contractId;
 
     @Nullable
     Boolean openSource;

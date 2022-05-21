@@ -22,6 +22,9 @@ public class Version {
     @Nullable
     String auditId;
 
+    @Nullable
+    String contractId;
+
     public Version() {
     }
 
