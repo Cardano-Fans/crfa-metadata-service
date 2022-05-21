@@ -26,7 +26,7 @@ public class Project {
     List<Script> scripts;
     @Nullable
     List<Audit> audits;
-    List<Audit> contracts;
+    List<Contract> contracts;
     List<String> features; // TODO strongly typed?
 
     public Project() {

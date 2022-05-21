@@ -16,6 +16,7 @@ public class Contract {
 
     @Nullable
     Boolean openSource;
+
     @Nullable
     String contractLink;
 
