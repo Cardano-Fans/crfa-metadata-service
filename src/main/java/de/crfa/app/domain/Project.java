@@ -8,10 +8,10 @@ import java.util.List;
 
 @Builder
 @Getter
-@Setter
 @ToString
 @AllArgsConstructor
 @JsonIgnoreProperties
+@NoArgsConstructor
 public class Project {
 
     String projectId;
@@ -24,12 +24,10 @@ public class Project {
     String subCategory;
 
     List<Script> scripts;
+
     @Nullable
     List<Audit> audits;
     List<Contract> contracts;
     List<String> features; // TODO strongly typed?
-
-    public Project() {
-    }
 
 }

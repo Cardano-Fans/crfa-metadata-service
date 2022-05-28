@@ -1,6 +1,7 @@
-package de.crfa.app.domain;
+package de.crfa.app.resource.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.crfa.app.domain.Purpose;
+import io.micronaut.core.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,8 +9,9 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-@JsonIgnoreProperties
-public class ProjectDto {
+public class DappScriptDto {
+
+    String projectId;
 
     String category;
     String subCategory;
@@ -18,9 +20,15 @@ public class ProjectDto {
     Integer version;
     String url;
     String icon;
+
+    @Nullable
     String contractAddress;
+
     String scriptHash;
+
     Purpose purpose;
+
+    @Nullable
     String mintPolicyID;
     String twitter;
 

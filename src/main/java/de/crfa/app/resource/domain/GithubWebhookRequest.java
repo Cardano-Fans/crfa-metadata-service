@@ -1,4 +1,4 @@
-package de.crfa.app.domain;
+package de.crfa.app.resource.domain;
 
 import lombok.Data;
 import lombok.ToString;

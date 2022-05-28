@@ -6,10 +6,10 @@ import lombok.*;
 
 @Builder
 @Getter
-@Setter
 @ToString
 @AllArgsConstructor
 @JsonIgnoreProperties
+@NoArgsConstructor
 public class Contract {
 
     String contractId;
@@ -19,8 +19,5 @@ public class Contract {
 
     @Nullable
     String contractLink;
-
-    public Contract() {
-    }
 
 }

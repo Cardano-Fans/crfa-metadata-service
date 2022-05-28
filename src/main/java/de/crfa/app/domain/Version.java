@@ -7,9 +7,9 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-@Setter
 @AllArgsConstructor
 @JsonIgnoreProperties
+@NoArgsConstructor
 public class Version {
 
     Integer version;
@@ -24,8 +24,5 @@ public class Version {
 
     @Nullable
     String contractId;
-
-    public Version() {
-    }
 
 }

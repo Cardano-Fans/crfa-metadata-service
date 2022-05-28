@@ -1,6 +1,7 @@
-package de.crfa.app;
+package de.crfa.app.resource;
 
-import de.crfa.app.domain.GithubWebhookRequest;
+import de.crfa.app.MetaDataService;
+import de.crfa.app.resource.domain.GithubWebhookRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;

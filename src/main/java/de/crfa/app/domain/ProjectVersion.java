@@ -3,17 +3,20 @@ package de.crfa.app.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Getter
 @ToString
-@AllArgsConstructor
 @JsonIgnoreProperties
+@AllArgsConstructor
 @NoArgsConstructor
-public class Audit {
+public class ProjectVersion {
 
-    String auditId;
-    String auditor;
-    String auditLink;
-    AuditType auditType;
+    int version;
+
+    String description;
+
+    List<ScriptMapping> scripts;
 
 }
