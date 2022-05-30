@@ -44,7 +44,6 @@ public class MetaDataService {
 
         Git.cloneRepository()
                 .setURI("https://github.com/Cardano-Fans/" + SUBPATH)
-                .setBranch("simple-releases")
                 .setDirectory(this.repoPath)
                 .call();
     }
