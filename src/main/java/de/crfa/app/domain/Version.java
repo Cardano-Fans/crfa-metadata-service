@@ -12,7 +12,7 @@ import lombok.*;
 @JsonIgnoreProperties
 public class Version {
 
-    Integer version;
+    int version;
     String scriptHash;
     String contractAddress;
 

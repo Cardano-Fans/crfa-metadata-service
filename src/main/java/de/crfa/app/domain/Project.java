@@ -12,9 +12,10 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @JsonIgnoreProperties
+@NoArgsConstructor
 public class Project {
 
-    String projectId;
+    String id;
 
     String projectName;
     String link;
@@ -29,7 +30,7 @@ public class Project {
     List<Contract> contracts;
     List<String> features; // TODO strongly typed?
 
-    public Project() {
-    }
+    @Nullable // for now nullable but in the future will be mandatory field
+    List<Release> releases;
 
 }

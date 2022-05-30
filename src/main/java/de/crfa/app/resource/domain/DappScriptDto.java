@@ -1,6 +1,7 @@
-package de.crfa.app.domain;
+package de.crfa.app.resource.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.crfa.app.domain.Purpose;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -9,7 +10,9 @@ import lombok.ToString;
 @Getter
 @ToString
 @JsonIgnoreProperties
-public class ProjectDto {
+public class DappScriptDto {
+
+    String id;
 
     String category;
     String subCategory;
