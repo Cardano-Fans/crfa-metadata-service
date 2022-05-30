@@ -69,6 +69,7 @@ public class MetaDataResource {
 
         for (var p : projects) {
             if (p.getReleases() == null) {
+                log.warn("Unable to find releases section for project id:{}", p.getId());
                 continue;
             }
 
