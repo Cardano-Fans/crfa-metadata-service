@@ -2,10 +2,8 @@ package de.crfa.app.resource;
 
 import de.crfa.app.MetaDataService;
 import de.crfa.app.domain.*;
-import de.crfa.app.resource.domain.DappScriptDto;
-import de.crfa.app.resource.domain.ProjectDto;
-import de.crfa.app.resource.domain.ReleaseDto;
-import de.crfa.app.resource.domain.ScriptMappingDto;
+import de.crfa.app.resource.domain.*;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
@@ -77,7 +75,9 @@ public class MetaDataResource {
                     .stream()
                     .collect(groupingBy(Script::getId));
 
-            var notUniqueScriptIds = scriptsGroupedById.entrySet().stream().anyMatch(stringListEntry -> stringListEntry.getValue().size() >  1);
+            var notUniqueScriptIds = scriptsGroupedById.entrySet()
+                    .stream()
+                    .anyMatch(stringListEntry -> stringListEntry.getValue().size() >  1);
 
             if (notUniqueScriptIds) {
                 throw new Exception("Not unique script names!");
@@ -100,7 +100,7 @@ public class MetaDataResource {
                     .subCategory(p.getSubCategory())
                     .icon(generateIcon(p.getLink()))
                     .type(findProjectType(p))
-                    .releases(convertReleases(p.getReleases(), scriptIdToScriptMap))
+                    .releases(convertReleases(p, p.getReleases(), scriptIdToScriptMap))
                     .build();
 
             projectDTOs.add(projectDTO);
@@ -109,18 +109,22 @@ public class MetaDataResource {
         return projectDTOs;
     }
 
-    private static List<ReleaseDto> convertReleases(List<Release> releases, Map<String, Script> scriptsGroupedById) {
+    private static List<ReleaseDto> convertReleases(Project p, List<Release> releases,
+                                                    Map<String, Script> scriptsGroupedById) {
         return releases.stream().map(release -> {
             return ReleaseDto.builder()
                     .description(release.getDescription())
                     .releaseNumber(release.getReleaseNumber())
                     .releaseName(release.getReleaseName())
-                    .scripts(convertScripts(release.getScripts(), scriptsGroupedById))
+                    .scripts(convertScripts(p, release.getScripts(), scriptsGroupedById))
                     .build();
         }).collect(Collectors.toList());
     }
 
-    private static List<ScriptMappingDto> convertScripts(List<ScriptMapping> scriptMappings, Map<String, Script> scriptsGroupedById) {
+    private static List<ScriptMappingDto> convertScripts(
+            Project p,
+            List<ScriptMapping> scriptMappings,
+            Map<String, Script> scriptsGroupedById) {
 
         var scriptMappingDtos = new ArrayList<ScriptMappingDto>();
 
@@ -153,8 +157,12 @@ public class MetaDataResource {
                     .name(script.getNameWithFallback())
                     .purpose(script.getPurpose())
                     .mintPolicyID(versionVersion.getMintPolicyID())
+                    // deprecated
                     .hasAudit(versionVersion.getAuditId() != null) // this usually means there has been at least manual or automatic audit
+                    // deprecated
                     .hasContract(versionVersion.getContractId() != null) // the fact that it has contract doesn't mean it is open sourced
+                    .contract(generateContract(findContractById(p, versionVersion.getContractId())).orElse(null))
+                    .audit(generateAudit(findByAuditId(p, versionVersion.getAuditId())).orElse(null))
                     .version(scriptMapping.getVersion())
                     .id(scriptMapping.getId())
                     .build();
@@ -165,47 +173,47 @@ public class MetaDataResource {
         return scriptMappingDtos;
     }
 
+    private static Optional<AuditDto> generateAudit(Optional<Audit> maybeAudit) {
+        return maybeAudit.map(a -> {
+            return AuditDto.builder()
+                    .auditLink(a.getAuditLink())
+                    .auditType(a.getAuditType())
+                    .auditor(a.getAuditor())
+                    .build();
+        });
+    }
+
+    private static Optional<ContractDto> generateContract(Optional<Contract> maybeContract) {
+        return maybeContract.map(c -> {
+           return ContractDto.builder()
+                   .contractLink(c.getContractLink())
+                   .openSource(c.getOpenSource())
+                   .build();
+        });
+    }
+
     private static Optional<Version> findVersion(List<Version> versions, int version) {
         return versions.stream().filter(versionVersion -> version == versionVersion.getVersion()).findFirst();
     }
 
-    // TODO fake...
-    // simply latest script versions for now from all scripts
-    private static ReleaseDto createFakeProjectVersion1(Project p) {
-        var projectVersionDto = new ReleaseDto();
-        projectVersionDto.setReleaseName("LAST");
-        projectVersionDto.setReleaseNumber(0);
-
-        // this is of course not acceptable, this needs to be manually verified as coherent dapp -> list<scripts> + versions mapping
-        projectVersionDto.setDescription("Latest version for each script belonging to the dApp");
-
-        var scriptMappingDtos = new ArrayList<ScriptMappingDto>();
-
-        var groupedById = p.getScripts()
-                .stream()
-                .collect(groupingBy(Script::getId));
-
-        groupedById.forEach((id, scripts) -> {
-            scripts.stream().findFirst().ifPresent(s -> {
-                findMaxScriptVersionId(s.getVersions()).ifPresent(v -> {
-                    scriptMappingDtos.add(ScriptMappingDto
-                            .builder()
-                            .id(ScriptMappingDto.discoverId(s.getPurpose(), v.getMintPolicyID(), v.getScriptHash()))
-                            .name(s.getNameWithFallback())
-                            .contractAddress(v.getContractAddress())
-                            .mintPolicyID(v.getMintPolicyID())
-                            .purpose(s.getPurpose())
-                            .version(v.getVersion())
-                            .scriptHash(v.getScriptHash())
-                            .build()
-                    );
-                });
-            });
+    private static Optional<Contract> findContractById(Project p, @Nullable String contractId) {
+        return Optional.ofNullable(contractId).flatMap(cId -> {
+            return Optional.ofNullable(p.getContracts())
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .filter(contract -> contract.getContractId().equalsIgnoreCase(cId))
+                    .findFirst();
         });
+    }
 
-        projectVersionDto.setScripts(scriptMappingDtos);
-
-        return projectVersionDto;
+    private static Optional<Audit> findByAuditId(Project p, @Nullable String auditId) {
+        return Optional.ofNullable(auditId).flatMap(aId -> {
+            return Optional.ofNullable(p.getAudits())
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .filter(contract -> contract.getAuditId().equalsIgnoreCase(aId))
+                    .findFirst();
+        });
     }
 
     @Get(uri = "/dapps/by-id/{id}", produces = "application/json")

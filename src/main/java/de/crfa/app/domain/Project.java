@@ -25,9 +25,13 @@ public class Project {
     String subCategory;
 
     List<Script> scripts;
+
     @Nullable
     List<Audit> audits;
+
+    @Nullable
     List<Contract> contracts;
+
     List<String> features; // TODO strongly typed?
 
     @Nullable // for now nullable but in the future will be mandatory field
