@@ -1,3 +1,7 @@
 micronaut:
   application:
     name: crfa-metadata-service
+
+  server:
+    port: 8082
+

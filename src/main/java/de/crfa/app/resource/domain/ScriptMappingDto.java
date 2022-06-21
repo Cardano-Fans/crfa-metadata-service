@@ -28,12 +28,8 @@ public class ScriptMappingDto {
     @Nullable
     String scriptHash;
 
-    @Nullable
-    @Deprecated
     Boolean hasContract;
 
-    @Nullable
-    @Deprecated
     Boolean hasAudit;
 
     @Nullable

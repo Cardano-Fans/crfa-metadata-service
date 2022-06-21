@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Release {
 
-    int releaseNumber;
+    float releaseNumber;
 
     String releaseName;
 

@@ -157,9 +157,7 @@ public class MetaDataResource {
                     .name(script.getNameWithFallback())
                     .purpose(script.getPurpose())
                     .mintPolicyID(versionVersion.getMintPolicyID())
-                    // deprecated
                     .hasAudit(versionVersion.getAuditId() != null) // this usually means there has been at least manual or automatic audit
-                    // deprecated
                     .hasContract(versionVersion.getContractId() != null) // the fact that it has contract doesn't mean it is open sourced
                     .contract(generateContract(findContractById(p, versionVersion.getContractId())).orElse(null))
                     .audit(generateAudit(findByAuditId(p, versionVersion.getAuditId())).orElse(null))

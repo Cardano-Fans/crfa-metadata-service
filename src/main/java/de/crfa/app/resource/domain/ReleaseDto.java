@@ -14,7 +14,7 @@ public class ReleaseDto {
 
     String releaseName;
 
-    int releaseNumber;
+    float releaseNumber;
 
     String description;
 
