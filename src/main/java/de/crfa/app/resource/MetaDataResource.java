@@ -227,7 +227,7 @@ public class MetaDataResource {
     }
 
     private static String generateIcon(String link) {
-        return String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=64", link);
+        return String.format("https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=%s&size=128", link);
     }
 
     private static ProjectType findProjectType(Project p) {
