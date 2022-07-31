@@ -20,9 +20,13 @@ public class Version {
     String mintPolicyID;
 
     @Nullable
+    // auditId is deprecated on script / version level
+    @Deprecated
     String auditId;
 
     @Nullable
+    @Deprecated
+    // contractId is deprecated on script / version level
     String contractId;
 
     public Version() {

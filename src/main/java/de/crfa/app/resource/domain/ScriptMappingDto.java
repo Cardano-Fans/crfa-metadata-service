@@ -28,14 +28,18 @@ public class ScriptMappingDto {
     @Nullable
     String scriptHash;
 
+    @Deprecated
     Boolean hasContract;
 
+    @Deprecated
     Boolean hasAudit;
 
     @Nullable
+    @Deprecated
     AuditDto audit;
 
     @Nullable
+    @Deprecated
     ContractDto contract;
 
     public static String discoverId(Purpose purpose, String mintPolicyID, String scriptHash) {

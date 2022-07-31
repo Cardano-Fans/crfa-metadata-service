@@ -1,5 +1,6 @@
 package de.crfa.app.resource.domain;
 
+import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
@@ -19,5 +20,11 @@ public class ReleaseDto {
     String description;
 
     List<ScriptMappingDto> scripts;
+
+    @Nullable
+    AuditDto audit;
+
+    @Nullable
+    ContractDto contract;
 
 }

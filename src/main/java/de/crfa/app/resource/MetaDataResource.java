@@ -117,6 +117,8 @@ public class MetaDataResource {
                     .releaseNumber(release.getReleaseNumber())
                     .releaseName(release.getReleaseName())
                     .scripts(convertScripts(p, release.getScripts(), scriptsGroupedById))
+                    .contract(generateContract(findContractById(p, release.getContractId())).orElse(null))
+                    .audit(generateAudit(findByAuditId(p, release.getAuditId())).orElse(null))
                     .build();
         }).collect(Collectors.toList());
     }
@@ -152,6 +154,7 @@ public class MetaDataResource {
 
             var scriptMappingDto = ScriptMappingDto
                     .builder()
+                    .id(scriptMapping.getId())
                     .scriptHash(versionVersion.getScriptHash())
                     .contractAddress(versionVersion.getContractAddress())
                     .name(script.getNameWithFallback())
@@ -160,10 +163,11 @@ public class MetaDataResource {
                     .hasAudit(versionVersion.getAuditId() != null) // this usually means there has been at least manual or automatic audit
                     .hasContract(versionVersion.getContractId() != null) // the fact that it has contract doesn't mean it is open sourced
                     .contract(generateContract(findContractById(p, versionVersion.getContractId())).orElse(null))
+                    // audit on script level is deprecated
                     .audit(generateAudit(findByAuditId(p, versionVersion.getAuditId())).orElse(null))
                     .version(scriptMapping.getVersion())
-                    .id(scriptMapping.getId())
                     .build();
+
 
             scriptMappingDtos.add(scriptMappingDto);
         }
