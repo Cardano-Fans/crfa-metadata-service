@@ -2,7 +2,11 @@ package de.crfa.app;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.crfa.app.domain.Project;
+import io.micronaut.context.annotation.Value;
 import io.micronaut.core.io.IOUtils;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.runtime.event.annotation.EventListener;
+import io.micronaut.runtime.server.event.ServerStartupEvent;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +34,16 @@ public class MetaDataService {
 
     private static final String SUBPATH = "crfa-offchain-data-registry";
 
+    @Value("${crfa-offchain-repo-branch:}")
+    private String crfaOffchainRepoBranch;
+
     public MetaDataService() throws GitAPIException {
         this.objectMapper = new ObjectMapper();
         this.tmpFile = new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    @EventListener
+    public void onStartup(ServerStartupEvent event) throws GitAPIException {
         cloneRepo();
     }
 
@@ -42,10 +53,15 @@ public class MetaDataService {
         this.repoPath = new File(tmpFile, SUBPATH + System.currentTimeMillis());
         log.info("new repo path:{}", repoPath);
 
-        Git.cloneRepository()
+        var repo = Git.cloneRepository()
                 .setURI("https://github.com/Cardano-Fans/" + SUBPATH)
-                .setDirectory(this.repoPath)
-                .call();
+                .setDirectory(this.repoPath);
+
+        if (StringUtils.hasText(crfaOffchainRepoBranch)) {
+            repo.setBranch(crfaOffchainRepoBranch);
+        }
+
+        repo.call();
     }
 
     @Scheduled(fixedDelay = "144h", initialDelay = "144h")

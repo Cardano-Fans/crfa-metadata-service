@@ -23,4 +23,10 @@ public class Release {
 
     List<ScriptMapping> scripts;
 
+    @Nullable
+    String auditId;
+
+    @Nullable
+    String contractId;
+
 }
