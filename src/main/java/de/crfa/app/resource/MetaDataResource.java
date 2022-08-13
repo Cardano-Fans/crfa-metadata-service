@@ -1,12 +1,14 @@
 package de.crfa.app.resource;
 
-import de.crfa.app.MetaDataService;
 import de.crfa.app.domain.*;
 import de.crfa.app.resource.domain.*;
+import de.crfa.app.service.AssetHoldersService;
+import de.crfa.app.service.MetaDataService;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -19,10 +21,13 @@ import static java.util.stream.Collectors.groupingBy;
 @Slf4j
 public class MetaDataResource {
 
-    private final MetaDataService metaDataService;
+    @Inject
+    private MetaDataService metaDataService;
 
-    public MetaDataResource(MetaDataService metaDataService) {
-        this.metaDataService = metaDataService;
+    @Inject
+    private AssetHoldersService assetHoldersService;
+
+    public MetaDataResource() {
     }
 
     @Get(uri = "/by-hash/{hash}", produces = "application/json")
@@ -34,7 +39,7 @@ public class MetaDataResource {
                 for (Version v : s.getVersions()) {
                     if (hash.equals(v.getScriptHash()) || hash.equals(v.getMintPolicyID())) {
 
-                            var dto = DappScriptDto
+                            var b = DappScriptDto
                                     .builder()
                                     .id(p.getId())
                                     .projectName(p.getProjectName())
@@ -47,10 +52,17 @@ public class MetaDataResource {
                                     .category(p.getCategory())
                                     .subCategory(p.getSubCategory())
                                     .icon(generateIcon(p.getLink()))
-                                    .twitter(p.getTwitter())
-                                    .build();
+                                    .twitter(p.getTwitter());
 
-                        return Optional.of(dto);
+                            // in this scenario we load up token holders and set them as "additional scripts"
+                            if (v.getMintPolicyID() != null && Boolean.TRUE.equals(v.getFetchAndTurnTokenHoldersIntoContractAddresses())) {
+                                log.info("Loading token holders for mintPolicyId:{}", v.getMintPolicyID());
+                                var loadedHolders = assetHoldersService.loadAssetHolders(v.getMintPolicyID());
+
+                                b.tokenHolders(loadedHolders);
+                            }
+
+                        return Optional.of(b.build());
                     }
                 }
             }
@@ -109,7 +121,7 @@ public class MetaDataResource {
         return projectDTOs;
     }
 
-    private static List<ReleaseDto> convertReleases(Project p, List<Release> releases,
+    private List<ReleaseDto> convertReleases(Project p, List<Release> releases,
                                                     Map<String, Script> scriptsGroupedById) {
         return releases.stream().map(release -> {
             return ReleaseDto.builder()
@@ -123,7 +135,7 @@ public class MetaDataResource {
         }).collect(Collectors.toList());
     }
 
-    private static List<ScriptMappingDto> convertScripts(
+    private List<ScriptMappingDto> convertScripts(
             Project p,
             List<ScriptMapping> scriptMappings,
             Map<String, Script> scriptsGroupedById) {
@@ -152,24 +164,32 @@ public class MetaDataResource {
 
             var versionVersion = maybeFoundVersion.get();
 
-            var scriptMappingDto = ScriptMappingDto
+            var mintPolicyID = versionVersion.getMintPolicyID();
+
+            var scriptMappingDtoBuilder = ScriptMappingDto
                     .builder()
                     .id(scriptMapping.getId())
                     .scriptHash(versionVersion.getScriptHash())
                     .contractAddress(versionVersion.getContractAddress())
                     .name(script.getNameWithFallback())
                     .purpose(script.getPurpose())
-                    .mintPolicyID(versionVersion.getMintPolicyID())
+                    .mintPolicyID(mintPolicyID)
                     .hasAudit(versionVersion.getAuditId() != null) // this usually means there has been at least manual or automatic audit
                     .hasContract(versionVersion.getContractId() != null) // the fact that it has contract doesn't mean it is open sourced
                     .contract(generateContract(findContractById(p, versionVersion.getContractId())).orElse(null))
                     // audit on script level is deprecated
                     .audit(generateAudit(findByAuditId(p, versionVersion.getAuditId())).orElse(null))
-                    .version(scriptMapping.getVersion())
-                    .build();
+                    .version(scriptMapping.getVersion());
 
+            if (mintPolicyID != null && Boolean.TRUE.equals(versionVersion.getFetchAndTurnTokenHoldersIntoContractAddresses())) {
+                log.info("Loading token holders for mintPolicyId:{}", mintPolicyID);
 
-            scriptMappingDtos.add(scriptMappingDto);
+                var loadedHolders = assetHoldersService.loadAssetHolders(mintPolicyID);
+
+                scriptMappingDtoBuilder.tokenHolders(loadedHolders);
+            }
+
+            scriptMappingDtos.add(scriptMappingDtoBuilder.build());
         }
 
         return scriptMappingDtos;

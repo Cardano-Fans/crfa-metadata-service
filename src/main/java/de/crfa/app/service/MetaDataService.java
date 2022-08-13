@@ -1,4 +1,4 @@
-package de.crfa.app;
+package de.crfa.app.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.crfa.app.domain.Project;

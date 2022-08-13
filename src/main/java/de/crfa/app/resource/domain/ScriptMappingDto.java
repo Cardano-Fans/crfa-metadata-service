@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Collection;
+
 @Builder
 @Getter
 @ToString
@@ -24,6 +26,9 @@ public class ScriptMappingDto {
 
     @Nullable
     String mintPolicyID;
+
+    @Nullable
+    Collection<String> tokenHolders; // this makes any sense only in case of fetchAndTurnTokenHoldersIntoContractAddresses set to true and mintPolicyId being present
 
     @Nullable
     String scriptHash;

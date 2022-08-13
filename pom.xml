@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.crfa</groupId>
     <artifactId>crfa-metadata-service</artifactId>
-    <version>0.8.4</version>
+    <version>0.8.5</version>
     <packaging>${packaging}</packaging>
 
     <parent>
@@ -15,8 +15,8 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>11</jdk.version>
-        <release.version>11</release.version>
+        <jdk.version>17</jdk.version>
+        <release.version>17</release.version>
         <micronaut.version>3.2.7</micronaut.version>
         <exec.mainClass>de.crfa.app.Application</exec.mainClass>
         <micronaut.runtime>netty</micronaut.runtime>
