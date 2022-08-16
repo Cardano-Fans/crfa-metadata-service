@@ -5,3 +5,6 @@ micronaut:
   server:
     port: 8082
 
+  http:
+    client:
+      read-timeout: 5m

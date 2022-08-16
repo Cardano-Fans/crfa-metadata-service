@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @Getter
 @ToString
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Release {

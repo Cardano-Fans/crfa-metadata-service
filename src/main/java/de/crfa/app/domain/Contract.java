@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @ToString
 @AllArgsConstructor
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Contract {
 
     String contractId;

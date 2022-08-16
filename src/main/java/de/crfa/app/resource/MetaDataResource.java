@@ -2,7 +2,6 @@ package de.crfa.app.resource;
 
 import de.crfa.app.domain.*;
 import de.crfa.app.resource.domain.*;
-import de.crfa.app.service.AssetHoldersService;
 import de.crfa.app.service.MetaDataService;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.annotation.Controller;
@@ -23,9 +22,6 @@ public class MetaDataResource {
 
     @Inject
     private MetaDataService metaDataService;
-
-    @Inject
-    private AssetHoldersService assetHoldersService;
 
     public MetaDataResource() {
     }
@@ -53,14 +49,6 @@ public class MetaDataResource {
                                     .subCategory(p.getSubCategory())
                                     .icon(generateIcon(p.getLink()))
                                     .twitter(p.getTwitter());
-
-                            // in this scenario we load up token holders and set them as "additional scripts"
-                            if (v.getMintPolicyID() != null && Boolean.TRUE.equals(v.getFetchAndTurnTokenHoldersIntoContractAddresses())) {
-                                log.info("Loading token holders for mintPolicyId:{}", v.getMintPolicyID());
-                                var loadedHolders = assetHoldersService.loadAssetHolders(v.getMintPolicyID());
-
-                                b.tokenHolders(loadedHolders);
-                            }
 
                         return Optional.of(b.build());
                     }
@@ -179,15 +167,8 @@ public class MetaDataResource {
                     .contract(generateContract(findContractById(p, versionVersion.getContractId())).orElse(null))
                     // audit on script level is deprecated
                     .audit(generateAudit(findByAuditId(p, versionVersion.getAuditId())).orElse(null))
+                    .includeScriptBalanceFromAsset(versionVersion.getIncludeScriptBalanceFromAsset())
                     .version(scriptMapping.getVersion());
-
-            if (mintPolicyID != null && Boolean.TRUE.equals(versionVersion.getFetchAndTurnTokenHoldersIntoContractAddresses())) {
-                log.info("Loading token holders for mintPolicyId:{}", mintPolicyID);
-
-                var loadedHolders = assetHoldersService.loadAssetHolders(mintPolicyID);
-
-                scriptMappingDtoBuilder.tokenHolders(loadedHolders);
-            }
 
             scriptMappingDtos.add(scriptMappingDtoBuilder.build());
         }

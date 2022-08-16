@@ -7,13 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.Collection;
-import java.util.List;
-
 @Builder
 @Getter
 @ToString
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Deprecated
 public class DappScriptDto {
 
@@ -42,9 +39,6 @@ public class DappScriptDto {
 
     @Nullable
     String mintPolicyID;
-
-    @Nullable
-    Collection<String> tokenHolders; // this makes any sense only in case of fetchAndTurnTokenHoldersIntoContractAddresses set to true and mintPolicyId being present
 
     String twitter;
 

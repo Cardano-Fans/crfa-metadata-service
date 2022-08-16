@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 public class Project {
 

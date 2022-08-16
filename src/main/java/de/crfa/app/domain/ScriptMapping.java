@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @Getter
 @ToString
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScriptMapping {
