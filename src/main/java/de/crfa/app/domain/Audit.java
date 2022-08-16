@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @Setter
 @AllArgsConstructor
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Audit {
 
     String auditId;

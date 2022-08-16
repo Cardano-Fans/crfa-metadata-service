@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
-import java.util.List;
-
 @Builder
 @Getter
 @ToString
 @Setter
 @AllArgsConstructor
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Version {
 
     int version;
@@ -25,7 +23,7 @@ public class Version {
     String mintPolicyID;
 
     @Nullable
-    Boolean fetchAndTurnTokenHoldersIntoContractAddresses;
+    String includeScriptBalanceFromAsset;
 
     @Nullable
     // auditId is deprecated on script / version level
