@@ -1,10 +1,10 @@
 package de.crfa.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -18,15 +18,12 @@ public class Release {
 
     String releaseName;
 
-    @Nullable
-    String description;
+    Optional<String> description = Optional.empty();;
 
     List<ScriptMapping> scripts;
 
-    @Nullable
-    String auditId;
+    Optional<String> auditId  = Optional.empty();;
 
-    @Nullable
-    String contractId;
+    Optional<String> contractId = Optional.empty();
 
 }

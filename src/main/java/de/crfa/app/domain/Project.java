@@ -1,10 +1,10 @@
 package de.crfa.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -26,15 +26,12 @@ public class Project {
 
     List<Script> scripts;
 
-    @Nullable
-    List<Audit> audits;
+    Optional<List<Audit>> audits;
 
-    @Nullable
-    List<Contract> contracts;
+    Optional<List<Contract>> contracts;
 
     List<String> features; // TODO strongly typed?
 
-    @Nullable // for now nullable but in the future will be mandatory field
     List<Release> releases;
 
 }

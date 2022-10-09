@@ -4,20 +4,20 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.crfa</groupId>
     <artifactId>crfa-metadata-service</artifactId>
-    <version>0.8.7</version>
+    <version>0.8.8</version>
     <packaging>${packaging}</packaging>
 
     <parent>
         <groupId>io.micronaut</groupId>
         <artifactId>micronaut-parent</artifactId>
-        <version>3.2.7</version>
+        <version>3.7.1</version>
     </parent>
 
     <properties>
         <packaging>jar</packaging>
         <jdk.version>17</jdk.version>
         <release.version>17</release.version>
-        <micronaut.version>3.2.7</micronaut.version>
+        <micronaut.version>3.7.1</micronaut.version>
         <exec.mainClass>de.crfa.app.Application</exec.mainClass>
         <micronaut.runtime>netty</micronaut.runtime>
     </properties>
@@ -39,6 +39,11 @@
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-validation</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>2.12.4</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

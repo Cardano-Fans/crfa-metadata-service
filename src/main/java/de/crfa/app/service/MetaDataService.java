@@ -8,8 +8,10 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.runtime.event.annotation.EventListener;
 import io.micronaut.runtime.server.event.ServerStartupEvent;
 import io.micronaut.scheduling.annotation.Scheduled;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -30,15 +32,16 @@ public class MetaDataService {
     private final File tmpFile;
 
     private File repoPath;
-    private final ObjectMapper objectMapper;
 
     private static final String SUBPATH = "crfa-offchain-data-registry";
+
+    @Inject
+    private ObjectMapper objectMapper;
 
     @Value("${crfa-offchain-repo-branch:}")
     private String crfaOffchainRepoBranch;
 
-    public MetaDataService() throws GitAPIException {
-        this.objectMapper = new ObjectMapper();
+    public MetaDataService() {
         this.tmpFile = new File(System.getProperty("java.io.tmpdir"));
     }
 
@@ -47,13 +50,13 @@ public class MetaDataService {
         cloneRepo();
     }
 
-    @Scheduled(fixedDelay = "24h", initialDelay = "24h")
+    @Scheduled(fixedDelay = "24h", initialDelay = "1m")
     public void cloneRepo() throws GitAPIException {
         log.info("Cloning repo, tmpPath:{}", this.tmpFile);
         this.repoPath = new File(tmpFile, SUBPATH + System.currentTimeMillis());
         log.info("new repo path:{}", repoPath);
 
-        var repo = Git.cloneRepository()
+        val repo = Git.cloneRepository()
                 .setURI("https://github.com/Cardano-Fans/" + SUBPATH)
                 .setDirectory(this.repoPath);
 
@@ -76,14 +79,14 @@ public class MetaDataService {
     }
 
     public List<Project> loadProjects() throws IOException {
-        var projects = new ArrayList<Project>();
+        val projects = new ArrayList<Project>();
 
         if (repoPath != null) {
             Files.list(Paths.get(repoPath.toString(), "dApps"))
                     .forEach(path -> {
-                        try (BufferedReader fr = new BufferedReader(new FileReader(path.toFile()))){
-                            var fileContent = IOUtils.readText(fr);
-                            var project = objectMapper.readValue(fileContent, Project.class);
+                        try (val fr = new BufferedReader(new FileReader(path.toFile()))){
+                            val fileContent = IOUtils.readText(fr);
+                            val project = objectMapper.readValue(fileContent, Project.class);
 
                             projects.add(project);
                         } catch (IOException e) {

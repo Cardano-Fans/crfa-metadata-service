@@ -1,10 +1,11 @@
 package de.crfa.app.resource.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.micronaut.core.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -12,10 +13,8 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContractDto {
 
-    @Nullable
-    Boolean openSource;
+    Optional<Boolean> openSource;
 
-    @Nullable
-    String contractLink;
+    Optional<String> contractLink;
 
 }

@@ -1,7 +1,6 @@
 package de.crfa.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
@@ -15,14 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Script {
 
-    @Nullable // temporary nullable
+    //@Nullable // temporary nullable
     String id;
 
     String name;
 
     Purpose purpose;
 
-    List<Version> versions;
+    List<ScriptVersion> versions;
 
     public String getNameWithFallback() {
         return name != null ? name : "";

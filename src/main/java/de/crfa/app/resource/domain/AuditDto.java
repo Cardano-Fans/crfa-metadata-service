@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Optional;
+
 @Builder
 @Getter
 @ToString
@@ -14,6 +16,6 @@ public class AuditDto {
 
     String auditor;
     String auditLink;
-    AuditType auditType;
+    Optional<AuditType> auditType;
 
 }

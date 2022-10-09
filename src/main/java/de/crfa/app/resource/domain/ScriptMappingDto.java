@@ -1,10 +1,11 @@
 package de.crfa.app.resource.domain;
 
 import de.crfa.app.domain.Purpose;
-import io.micronaut.core.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -19,29 +20,14 @@ public class ScriptMappingDto {
 
     Purpose purpose;
 
-    @Nullable
-    String contractAddress;
-
-    @Nullable
-    String mintPolicyID;
-
-    @Nullable
     String scriptHash;
 
-    @Deprecated
-    Boolean hasContract;
+    Optional<String> contractAddress;
 
-    @Deprecated
-    Boolean hasAudit;
+    Optional<String> mintPolicyID;
 
-    @Nullable
-    @Deprecated
-    AuditDto audit;
+    int plutusVersion;
 
-    @Nullable
-    @Deprecated
-    ContractDto contract;
-
-    String includeScriptBalanceFromAsset;
+    Optional<String> includeScriptBalanceFromAsset;
 
 }

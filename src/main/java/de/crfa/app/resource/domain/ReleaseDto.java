@@ -4,6 +4,7 @@ import io.micronaut.core.annotation.Nullable;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -17,14 +18,12 @@ public class ReleaseDto {
 
     float releaseNumber;
 
-    String description;
+    Optional<String> description;
 
     List<ScriptMappingDto> scripts;
 
-    @Nullable
-    AuditDto audit;
+    Optional<AuditDto> audit;
 
-    @Nullable
-    ContractDto contract;
+    Optional<ContractDto> contract;
 
 }
