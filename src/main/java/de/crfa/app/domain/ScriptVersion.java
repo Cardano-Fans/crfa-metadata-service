@@ -11,6 +11,7 @@ import java.util.Optional;
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class ScriptVersion {
 
     int version;
@@ -24,8 +25,5 @@ public class ScriptVersion {
     Optional<String> includeScriptBalanceFromAsset = Optional.empty();
 
     Optional<Integer> plutusVersion = Optional.empty();
-
-    public ScriptVersion() {
-    }
 
 }

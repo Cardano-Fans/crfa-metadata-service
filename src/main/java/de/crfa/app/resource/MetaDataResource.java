@@ -124,7 +124,7 @@ public class MetaDataResource {
                     .id(scriptMapping.getId())
                     .scriptHash(scriptVersion.getScriptHash())
                     .contractAddress(scriptVersion.getContractAddress())
-                    .name(script.getNameWithFallback())
+                    .name(script.getName())
                     .purpose(script.getPurpose())
                     .mintPolicyID(mintPolicyID)
                     .plutusVersion(scriptVersion.getPlutusVersion().orElse(1))

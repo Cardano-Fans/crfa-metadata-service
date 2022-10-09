@@ -11,6 +11,7 @@ import java.util.Optional;
 @ToString
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class Contract {
 
     String contractId;
@@ -18,8 +19,5 @@ public class Contract {
     Optional<Boolean> openSource;
 
     Optional<String> contractLink;
-
-    public Contract() {
-    }
 
 }

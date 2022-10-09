@@ -14,7 +14,7 @@ public class ScriptMappingDto {
 
     String id;
 
-    String name;
+    Optional<String> name;
 
     int version;
 

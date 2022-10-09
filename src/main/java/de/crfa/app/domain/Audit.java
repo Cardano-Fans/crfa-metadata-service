@@ -11,14 +11,12 @@ import java.util.Optional;
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor
 public class Audit {
 
     String auditId;
     String auditor;
     String auditLink;
-    Optional<AuditType> auditType;
-
-    public Audit() {
-    }
+    Optional<AuditType> auditType = Optional.empty();
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @Getter
@@ -17,14 +18,10 @@ public class Script {
     //@Nullable // temporary nullable
     String id;
 
-    String name;
+    Optional<String> name = Optional.empty();
 
     Purpose purpose;
 
     List<ScriptVersion> versions;
-
-    public String getNameWithFallback() {
-        return name != null ? name : "";
-    }
 
 }
