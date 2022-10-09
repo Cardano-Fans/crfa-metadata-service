@@ -80,7 +80,7 @@ public class MetaDataResource {
                     .anyMatch(stringListEntry -> stringListEntry.getValue().size() >  1);
 
             if (notUniqueScriptIds) {
-                throw new Exception("Not unique script names!");
+                throw new Exception("Not unique script ids!");
             }
 
             var scriptIdToScriptMap = new HashMap<String, Script>();

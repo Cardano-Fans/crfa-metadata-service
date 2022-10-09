@@ -44,12 +44,4 @@ public class ScriptMappingDto {
 
     String includeScriptBalanceFromAsset;
 
-    public static String discoverId(Purpose purpose, String mintPolicyID, String scriptHash) {
-        if (purpose == Purpose.MINT) {
-            return mintPolicyID;
-        }
-
-        return scriptHash;
-    }
-
 }
