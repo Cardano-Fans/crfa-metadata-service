@@ -28,6 +28,8 @@ public class ScriptMappingDto {
 
     int plutusVersion;
 
+    Optional<String> fullScriptHash;
+
     Optional<String> includeScriptBalanceFromAsset;
 
 }

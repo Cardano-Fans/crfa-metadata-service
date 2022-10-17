@@ -128,6 +128,7 @@ public class MetaDataResource {
                     .purpose(script.getPurpose())
                     .mintPolicyID(mintPolicyID)
                     .plutusVersion(scriptVersion.getPlutusVersion().orElse(1))
+                    .fullScriptHash(scriptVersion.getFullScriptHash())
                     .includeScriptBalanceFromAsset(scriptVersion.getIncludeScriptBalanceFromAsset())
                     .version(scriptMapping.getVersion());
 

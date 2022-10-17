@@ -26,4 +26,7 @@ public class ScriptVersion {
 
     Optional<Integer> plutusVersion = Optional.empty();
 
+    // for now optional but we want to make it mandatory
+    Optional<String> fullScriptHash = Optional.empty();
+
 }
