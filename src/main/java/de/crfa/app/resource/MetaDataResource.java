@@ -42,9 +42,16 @@ public class MetaDataResource {
 
             val notUniqueScriptIds = scriptsGroupedById.entrySet()
                     .stream()
-                    .anyMatch(stringListEntry -> stringListEntry.getValue().size() >  1);
+                    .anyMatch(stringListEntry -> stringListEntry.getValue().size() > 1);
 
             if (notUniqueScriptIds) {
+                val dups = scriptsGroupedById.entrySet().stream().filter(stringListEntry -> stringListEntry.getValue().size() > 1)
+                        .toList();
+
+                dups.forEach(entry -> {
+                    log.error("Duplicates: {}", entry.getValue());
+                });
+
                 throw new Exception("Not unique script ids!");
             }
 
@@ -86,7 +93,7 @@ public class MetaDataResource {
                     .contract(generateContract(findContractById(p, release.getContractId())))
                     .audit(generateAudit(findByAuditId(p, release.getAuditId())))
                     .build();
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private List<ScriptMappingDto> convertScripts(

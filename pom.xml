@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.crfa</groupId>
     <artifactId>crfa-metadata-service</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
     <packaging>${packaging}</packaging>
 
     <parent>
