@@ -5,7 +5,7 @@ A Micronaut-based service that serves metadata from the [CRFA Offchain Data Regi
 ## Prerequisites
 
 - **JDK 24**
-- **Maven 3.9+**
+- **Gradle 8.3+**
 
 ## Quick Start
 
@@ -14,19 +14,16 @@ A Micronaut-based service that serves metadata from the [CRFA Offchain Data Regi
 For development with automatic reload and enhanced debugging:
 
 ```bash
-# Method 1: Direct Maven execution with automatic reloading (recommended)
-mvn mn:run
+# Method 1: Direct Gradle execution with automatic reloading (recommended)
+./gradlew run --continuous
 
-# Method 2: Compile and run with continuous compilation
-mvn compile exec:exec
-
-# Method 3: Package and run with development profile
-mvn clean package
-java -Dmicronaut.environments=dev -jar target/crfa-metadata-service-0.9.1.jar
+# Method 2: Build and run with development profile
+./gradlew build
+java -Dmicronaut.environments=dev -jar build/libs/crfa-metadata-service-0.10.0-all.jar
 ```
 
 **Development Features:**
-- Automatic code reloading (when using `mvn mn:run`)
+- Automatic code reloading (when using `--continuous`)
 - Continuous compilation
 - Enhanced logging and debugging
 - Development-friendly error pages
@@ -34,7 +31,7 @@ java -Dmicronaut.environments=dev -jar target/crfa-metadata-service-0.9.1.jar
 - Port: `8082` (configured in application.yml)
 
 **Development Workflow:**
-1. Start with `mvn mn:run`
+1. Start with `./gradlew run --continuous`
 2. Make code changes in your IDE
 3. Save files - changes are automatically reloaded
 4. Test immediately without restart
@@ -45,13 +42,13 @@ For production deployment:
 
 ```bash
 # Build optimized package
-mvn clean package -Dmicronaut.environments=prod
+./gradlew shadowJar
 
 # Run in production mode
 java -Dmicronaut.environments=prod \
      -Xms512m -Xmx1024m \
      -server \
-     -jar target/crfa-metadata-service-0.9.1.jar
+     -jar build/libs/crfa-metadata-service-0.10.0-all.jar
 ```
 
 **Production Features:**
@@ -64,33 +61,39 @@ java -Dmicronaut.environments=prod \
 
 ```bash
 # Clean build
-mvn clean compile
+./gradlew clean build
 
 # Full package with tests
-mvn clean package
+./gradlew shadowJar
 
 # Skip tests (faster build)
-mvn clean package -DskipTests
+./gradlew shadowJar -x test
+
+# Build native image
+./gradlew nativeCompile
 ```
 
 ## Running
 
 ### Local Development
 ```bash
-# Method 1: Direct Maven execution (recommended for development)
-mvn mn:run
+# Method 1: Direct Gradle execution (recommended for development)
+./gradlew run
 
 # Method 2: Traditional jar execution
-java -jar target/crfa-metadata-service-0.9.1.jar
+java -jar build/libs/crfa-metadata-service-0.10.0-all.jar
 ```
 
 ### Docker (Production)
 ```bash
-# Build native image (if configured)
-mvn clean package -Dpackaging=docker-native
+# Build JVM Docker image
+docker build --build-arg VERSION=0.10.0 -f Dockerfile.jvm -t crfa-metadata-service:jvm .
 
-# Run with Docker
-docker run -p 8082:8082 crfa-metadata-service
+# Build native Docker image
+docker build --build-arg VERSION=0.10.0 -f Dockerfile.native -t crfa-metadata-service:native .
+
+# Run with Docker (with restart policy)
+docker run -d --name crfa-metadata-service -p 8082:8082 --restart unless-stopped crfa-metadata-service:jvm
 ```
 
 ## Configuration
@@ -130,7 +133,7 @@ curl http://localhost:8082/health/readiness
 
 1. **Start development server:**
    ```bash
-   mvn mn:run
+   ./gradlew run --continuous
    ```
 
 2. **Make code changes** - the server will automatically reload
@@ -142,7 +145,7 @@ curl http://localhost:8082/health/readiness
 
 4. **Run tests:**
    ```bash
-   mvn test
+   ./gradlew test
    ```
 
 ## Deployment
@@ -170,7 +173,7 @@ Type=simple
 User=crfa
 ExecStart=/usr/bin/java -Dmicronaut.environments=prod \
           -Xms512m -Xmx1024m \
-          -jar /opt/crfa/crfa-metadata-service-0.9.1.jar
+          -jar /opt/crfa/crfa-metadata-service-0.10.0-all.jar
 Restart=always
 RestartSec=10
 
@@ -180,9 +183,9 @@ WantedBy=multi-user.target
 
 ## Technology Stack
 
-- **Framework**: Micronaut 4.9.0
+- **Framework**: Micronaut 4.9.1
 - **Java**: JDK 24
-- **Build Tool**: Maven 3.9+
+- **Build Tool**: Gradle 8.3+
 - **Server**: Netty (embedded)
 
 ## Contributing
@@ -190,7 +193,7 @@ WantedBy=multi-user.target
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run tests: `mvn test`
+4. Run tests: `./gradlew test`
 5. Submit a pull request
 
 ## License

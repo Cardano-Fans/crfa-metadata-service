@@ -16,10 +16,15 @@ RUN ./gradlew nativeCompile --no-daemon
 
 FROM ghcr.io/graalvm/graalvm-community:24.0.2-ol9
 
+ARG VERSION
+RUN test -n "$VERSION" || (echo "VERSION build argument is required" && exit 1)
+
 WORKDIR /app
 
 COPY --from=builder /app/build/native/nativeCompile/crfa-metadata-service app
 
 EXPOSE 8080
+
+LABEL version="$VERSION"
 
 CMD ["./app"]

@@ -27,6 +27,9 @@ RUN ./gradlew shadowJar --no-daemon
 
 FROM ubuntu:24.04
 
+ARG VERSION
+RUN test -n "$VERSION" || (echo "VERSION build argument is required" && exit 1)
+
 RUN apt-get update && \
     apt-get install -y wget ca-certificates && \
     rm -rf /var/lib/apt/lists/*
@@ -45,5 +48,7 @@ WORKDIR /app
 COPY --from=builder /app/build/libs/crfa-metadata-service-*-all.jar app.jar
 
 EXPOSE 8080
+
+LABEL version="$VERSION"
 
 CMD ["java", "-jar", "app.jar"]
