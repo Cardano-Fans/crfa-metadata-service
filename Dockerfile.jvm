@@ -1,0 +1,47 @@
+FROM ubuntu:24.04 AS builder
+
+RUN apt-get update && \
+    apt-get install -y wget ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN wget https://download.oracle.com/java/24/archive/jdk-24_linux-x64_bin.tar.gz && \
+    tar -xzf jdk-24_linux-x64_bin.tar.gz && \
+    mkdir -p /opt && \
+    mv jdk-24 /opt/jdk-24 && \
+    rm jdk-24_linux-x64_bin.tar.gz
+
+ENV JAVA_HOME=/opt/jdk-24
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+COPY src src
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
+
+FROM ubuntu:24.04
+
+RUN apt-get update && \
+    apt-get install -y wget ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN wget https://download.oracle.com/java/24/archive/jdk-24_linux-x64_bin.tar.gz && \
+    tar -xzf jdk-24_linux-x64_bin.tar.gz && \
+    mkdir -p /opt && \
+    mv jdk-24 /opt/jdk-24 && \
+    rm jdk-24_linux-x64_bin.tar.gz
+
+ENV JAVA_HOME=/opt/jdk-24
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+WORKDIR /app
+
+COPY --from=builder /app/target/crfa-metadata-service-*.jar app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]

@@ -1,0 +1,23 @@
+FROM ghcr.io/graalvm/graalvm-community:21.0.2-ol9-20240116 AS builder
+
+RUN microdnf install -y findutils
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+COPY src src
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -Dpackaging=native-image -Pgraalvm
+
+FROM ghcr.io/graalvm/graalvm-community:21.0.2-ol9-20240116
+
+WORKDIR /app
+
+COPY --from=builder /app/target/crfa-metadata-service app
+
+EXPOSE 8080
+
+CMD ["./app"]
