@@ -15,8 +15,8 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>17</jdk.version>
-        <release.version>17</release.version>
+        <jdk.version>24</jdk.version>
+        <release.version>24</release.version>
         <micronaut.version>4.9.0</micronaut.version>
         <exec.mainClass>de.crfa.app.Application</exec.mainClass>
         <micronaut.runtime>netty</micronaut.runtime>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
 
@@ -138,11 +138,11 @@
             </plugin>
 
             <plugin>
-
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-
+                <version>3.14.0</version>
                 <configuration>
+                    <fork>true</fork>
                     <!-- Uncomment to enable incremental compilation -->
                     <!-- <useIncrementalCompilation>false</useIncrementalCompilation> -->
 
@@ -150,7 +150,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.22</version>
+                            <version>1.18.38</version>
                         </path>
                         <path>
                             <groupId>io.micronaut</groupId>
