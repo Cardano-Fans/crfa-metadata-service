@@ -17,6 +17,7 @@ public class Audit {
     String auditId;
     String auditor;
     String auditLink;
+    @Builder.Default
     Optional<AuditType> auditType = Optional.empty();
 
 }

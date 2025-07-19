@@ -18,12 +18,15 @@ public class Release {
 
     String releaseName;
 
-    Optional<String> description = Optional.empty();;
+    @Builder.Default
+    Optional<String> description = Optional.empty();
 
     List<ScriptMapping> scripts;
 
-    Optional<String> auditId  = Optional.empty();;
+    @Builder.Default
+    Optional<String> auditId  = Optional.empty();
 
+    @Builder.Default
     Optional<String> contractId = Optional.empty();
 
 }

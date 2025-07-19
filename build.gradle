@@ -1,0 +1,85 @@
+plugins {
+    id("com.gradleup.shadow") version "8.3.5"
+    id("io.micronaut.application") version "4.5.4"
+    id("io.micronaut.aot") version "4.5.4"
+}
+
+version = "0.10.0"
+group = "de.crfa"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    
+    implementation("io.micronaut:micronaut-inject")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+    implementation("org.fusesource.jansi:jansi:${jansiVersion}")
+    
+    // Project specific dependencies
+    implementation("org.eclipse.jgit:org.eclipse.jgit:${jgitVersion}")
+    implementation("commons-io:commons-io:${commonsIoVersion}")
+    
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.yaml:snakeyaml")
+    
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+}
+
+application {
+    mainClass.set("de.crfa.app.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_24
+    targetCompatibility = JavaVersion.VERSION_24
+}
+
+graalvmNative {
+    toolchainDetection = false
+    binaries {
+        main {
+            buildArgs.add("--initialize-at-build-time")
+            buildArgs.add("--no-fallback")
+            buildArgs.add("-H:+ReportExceptionStackTraces")
+        }
+    }
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("de.crfa.*")
+    }
+    aot {
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,22 +1,24 @@
-FROM ghcr.io/graalvm/graalvm-community:21.0.2-ol9-20240116 AS builder
+FROM ghcr.io/graalvm/graalvm-community:24.0.2-ol9 AS builder
 
 RUN microdnf install -y findutils
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradle.properties .
+COPY gradlew .
+COPY gradle gradle
 COPY src src
 
-RUN chmod +x mvnw
-RUN ./mvnw clean package -Dpackaging=native-image -Pgraalvm
+RUN chmod +x gradlew
+RUN ./gradlew nativeCompile --no-daemon
 
-FROM ghcr.io/graalvm/graalvm-community:21.0.2-ol9-20240116
+FROM ghcr.io/graalvm/graalvm-community:24.0.2-ol9
 
 WORKDIR /app
 
-COPY --from=builder /app/target/crfa-metadata-service app
+COPY --from=builder /app/build/native/nativeCompile/crfa-metadata-service app
 
 EXPOSE 8080
 

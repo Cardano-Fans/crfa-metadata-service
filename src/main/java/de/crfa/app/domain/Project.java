@@ -26,8 +26,10 @@ public class Project {
 
     List<Script> scripts;
 
+    @Builder.Default
     Optional<List<Audit>> audits = Optional.empty();
 
+    @Builder.Default
     Optional<List<Contract>> contracts = Optional.empty();
 
     List<String> features; // TODO strongly typed?

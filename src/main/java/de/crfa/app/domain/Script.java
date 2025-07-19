@@ -18,6 +18,7 @@ public class Script {
     //@Nullable // temporary nullable
     String id;
 
+    @Builder.Default
     Optional<String> name = Optional.empty();
 
     Purpose purpose;
